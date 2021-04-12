@@ -5,7 +5,7 @@
 #include <netinet/in.h> 
 #include <string.h> 
 
-#define PORT 80
+#define PORT 3001
    
 int main(int argc, char const *argv[]) 
 { 
@@ -37,6 +37,7 @@ int main(int argc, char const *argv[])
         printf("\nConnection Failed \n"); 
         return -1; 
     } 
+
     send(sock , hello , strlen(hello) , 0 ); 
     printf("Hello message sent\n"); 
     valread = read( sock , buffer, 1024); 

@@ -7,7 +7,7 @@
 #include <netinet/in.h>
 #include <string.h>
 
-#define PORT 80
+#define PORT 3001
 int main(int argc, char const *argv[])
 {
     int server_fd, new_socket, valread;
@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
     int addrlen = sizeof(address);
     char buffer[102] = {0};
     char *hello = "Hello from server";
+    pid_t pid;
 
     printf("execve=0x%p\n", execve);
 
@@ -55,9 +56,33 @@ int main(int argc, char const *argv[])
         perror("accept");
         exit(EXIT_FAILURE);
     }
-    valread = read( new_socket , buffer, 1024);
-    printf("%s\n",buffer );
-    send(new_socket , hello , strlen(hello) , 0 );
-    printf("Hello message sent\n");
+
+
+   
+   switch (pid = fork()){
+    case -1:
+        //fatal("%s: fork", __func__);
+    case 0:
+        printf("Child PID = %d\n",getpid());
+        //execvp(" -p", )
+        //fatal("%s: execvp", __func__);
+        setuid(65534);
+        //char* args[] = {"./server", }
+        //execv(args[0], );
+        
+        valread = read( new_socket , buffer, 1024);
+        printf("%s\n",buffer );
+        send(new_socket , hello , strlen(hello) , 0 );
+        printf("Hello message sent\n");
+        
+        break;
+    default:
+        printf("Parent PID = %d\n",getpid());
+        wait(NULL);
+        //Close child's socket end 
+        //close())
+        break;
+   }
+   
     return 0;
 }
