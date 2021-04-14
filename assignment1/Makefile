@@ -6,6 +6,8 @@ LIBS= -lm
 CLIENT = client.o
 SERVER = server.o
 
+all: client server
+
 client: ${CLIENT}
 	${CC} ${CFLAGS} ${INCLUDES} -o $@ ${CLIENT} ${LIBS}
 

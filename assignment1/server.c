@@ -10,7 +10,7 @@
 #define PORT 3001
 int main(int argc, char const *argv[])
 {
-    int server_fd, new_socket, valread;
+    int server_fd, new_socket, valread, user;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
@@ -61,28 +61,28 @@ int main(int argc, char const *argv[])
    
    switch (pid = fork()){
     case -1:
-        //fatal("%s: fork", __func__);
+        perror("fork failed");
+        exit(EXIT_FAILURE);
     case 0:
-        printf("Child PID = %d\n",getpid());
-        //execvp(" -p", )
-        //fatal("%s: execvp", __func__);
-
         // set to nobody user
         setuid(65534);
-        //char* args[] = {"./server", }
-        //execv(args[0], );
-        
+
+        //user = getpwnam("nobody");
+		//setuid(user);
+        printf("Child UID = %d\n",getuid());
+
         valread = read( new_socket , buffer, 1024);
         printf("%s\n",buffer );
         send(new_socket , hello , strlen(hello) , 0 );
         printf("Hello message sent\n");
-        
         break;
     default:
         printf("Parent PID = %d\n",getpid());
+        close(new_socket);
         wait(NULL);
+        printf("Returning child\n");
         break;
    }
-   
+   close(server_fd);
     return 0;
 }
