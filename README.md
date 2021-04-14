@@ -1,3 +1,8 @@
 # CMPE-279
 
-Brandon Ngo
+Brandon Ngo 010646012
+
+make all
+./server
+./client
+
