@@ -6,8 +6,9 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <pwd.h>
 
-#define PORT 3001
+#define PORT 80
 int main(int argc, char const *argv[])
 {
     int server_fd, new_socket, valread, user;
@@ -17,6 +18,7 @@ int main(int argc, char const *argv[])
     char buffer[102] = {0};
     char *hello = "Hello from server";
     pid_t pid;
+    struct passwd* pwd;
 
     printf("execve=0x%p\n", execve);
 
@@ -65,10 +67,12 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     case 0:
         // set to nobody user
-        setuid(65534);
+        //setuid(65534);
 
-        //user = getpwnam("nobody");
-		//setuid(user);
+        if(getpwnam("nobody")){
+            pwd = getpwnam("nobody");
+            setuid(pwd->pw_uid);
+        }
         printf("Child UID = %d\n",getuid());
 
         valread = read( new_socket , buffer, 1024);
