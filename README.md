@@ -2,9 +2,11 @@
 
 Brandon Ngo 010646012
 
-make all
+compile:
+  make all
 
-./server
+run:
+  ./server
 
-./client
+  ./client
 
