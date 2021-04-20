@@ -3,7 +3,7 @@
 Brandon Ngo 010646012
 
 compile:
-  make all
+\n  make all
 
 run:
   ./server
